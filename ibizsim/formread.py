@@ -3,7 +3,7 @@ import xlrd
 import os
 
 path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-filename = path+os.sep+'2019_bizsim.xls'
+filename = path+os.sep+'form'+os.sep+'2019_bizsim.xls'
 
 # 定义价格price_list
 price_list = []
@@ -112,4 +112,4 @@ def excel_data(filename, sheet_index):
 
 if __name__ == "__main__":
     data = excel_data(filename, 5)
-    # print(data)
+    # print(len(data))
