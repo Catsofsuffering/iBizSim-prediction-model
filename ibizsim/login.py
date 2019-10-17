@@ -44,4 +44,5 @@ if __name__ == "__main__":
     username, password = '821621930@qq.com', 'Whoareyou59820'
     authenticity_token = get_token()
     cookies =  login(authenticity_token, username, password)
+    print(cookies)
         

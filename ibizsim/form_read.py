@@ -34,7 +34,7 @@ support_low_col = 70
 support_up_col = 74
 # 生产行列范围
 product_low_row = 19
-product_up_row = 22
+product_up_row = 23
 product_low_col = 70
 product_up_col = 75
 # 发展行列范围
@@ -94,12 +94,12 @@ def excel_data(filename, sheet_index):
             finance_list.append(cell_value)
 
         # test
-        # print(price_list)
-        # print(support_list)
-        # print(promotion_list)
-        # print(product_list)
-        # print(develop_list)
-        # print(finance_list)
+        # print(len(price_list))
+        # print(len(promotion_list))
+        # print(len(support_list))
+        # print(len(product_list))
+        # print(len(develop_list))
+        # print(len(finance_list))
 
         # 合并返回
         result_list = price_list + support_list + promotion_list + \
@@ -112,4 +112,4 @@ def excel_data(filename, sheet_index):
 
 if __name__ == "__main__":
     data = excel_data(filename, 5)
-    # print(len(data))
+    # print(data)

@@ -1,28 +1,32 @@
 # -*-coding=utf-8-*-
-import login_requ.py
+import login
+.py
 
 authenticity_token = get_token()
 cookies = login(authenticity_token, username, password)
+referer = Url + "/games/decision?gameid=" + gameid + "&type=raw&teamid=" + teamid + "&mode=old"
 
 headers = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3'
-    'Accept-Encoding': 'gzip, deflate'
-    'Accept-Language': 'zh-CN,zh;q=0.9'
-    'Cache-Control': 'max-age=0'
-    'Connection': 'keep-alive'
-    'Content-Length': '2063'
-    'Content-Type': 'application/x-www-form-urlencoded'
-    'Cookie': 'cookies'
-    'Host': 'www.ibizsim.cn'
-    'Origin': 'http://www.ibizsim.cn'
-    'Referer': 'http://www.ibizsim.cn/games/decision?gameid=177430&type=raw&teamid=351328&mode=old'
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept-Language': 'zh-CN,zh;q=0.9',
+    'Cache-Control': 'max-age=0',
+    'Connection': 'keep-alive',
+    'Content-Length': '2063',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': cookies,
+    'Host': 'www.ibizsim.cn',
+    'Origin': 'http://www.ibizsim.cn',
+    'Referer': referer,
     'Upgrade-Insecure-Requests': '1'
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
 }
 
+s.headers.update(headers)
 
 def formput(param):
-    url = ""
+    url = "http://www.ibizsim.cn/games/make_decision?teamid=" + teamid
+
     param = {
         'utf8': '✓',
         'authenticity_token': authenticity_token,
@@ -90,13 +94,14 @@ def formput(param):
         'decision[men_release]': data[61],
         'decision[machine_buy]': data[62],
         'decision[raw_m_buy]': data[63],
-        'decision[bank_loan]': 0
-        'decision[debentures]': 0
-        'decision[gov_s]': 0
-        'decision[dividends]': 0
-        'decision[wage_rate]': 1.0
+        'decision[bank_loan]': data[64],
+        'decision[debentures]': data[65],
+        'decision[gov_s]': data[66],
+        'decision[dividends]': data[67],
+        'decision[wage_rate]': data[68],
         'decision[game_id]': game_id,
         'decision[user_id]': user_id,
         'decision[period_id]': period_id,
         'commit': 提交
     }
+    response = s.post(url, data=param)
