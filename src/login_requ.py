@@ -37,10 +37,11 @@ def login(authenticity_token, username, password):
         'commit': '登录'
     }
     response = s.post(url, data=param)
-    print(response)
+    cookies = response.cookies.get_dict()
+    return cookies
 
 if __name__ == "__main__":
     username, password = '821621930@qq.com', 'Whoareyou59820'
     authenticity_token = get_token()
-    login(authenticity_token, username, password)
+    cookies =  login(authenticity_token, username, password)
         
