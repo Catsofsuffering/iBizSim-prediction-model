@@ -3,9 +3,11 @@ import requests
 import re
 import http.cookiejar as cookielib
 
+# session链接，初始化cookies文件
 s = requests.session()
 s.cookies = cookielib.LWPCookieJar(filename="ibizsimCookies.txt")
 
+# 登录用的header
 header = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
     'Accept-Encoding': 'gzip, deflate',
@@ -18,6 +20,8 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
 }
 
+# 检查登录状态的header
+# 可以继续细化，改用登陆用的header修改而成
 check_header = {
     'Host': 'www.ibizsim.cn',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
@@ -29,7 +33,8 @@ check_header = {
     'Upgrade-Insecure-Requests': '1'
 }
 
-
+# 获取登录表单的authenticity_token
+# 无需cookies值
 def get_login_token():
     get_url = 'http://www.ibizsim.cn/main/login'
     response = s.get(get_url)
@@ -37,7 +42,8 @@ def get_login_token():
     authenticity_token = re.findall(pat, response.text)[0]
     return authenticity_token
 
-
+# 通过用户名和密码登陆
+# 同时保存cookies值到指定文件
 def login(authenticity_token, username, password):
     login_url = "http://www.ibizsim.cn//center/trylogin"
     param = {
@@ -53,9 +59,9 @@ def login(authenticity_token, username, password):
     # print(response.text)
     s.cookies.save(filename="ibizsimCookies.txt",
                    ignore_discard=True, ignore_expires=True)
-    print(s.cookies)
+    # print(s.cookies)
 
-
+# 检查cookies值是否失效
 def check_login_status():
     check_url = "http://www.ibizsim.cn/games/mygames"
     resp = s.get(check_url, headers=check_header, allow_redirects=False)

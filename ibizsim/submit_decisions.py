@@ -3,10 +3,13 @@ import requests
 import re
 import http.cookiejar as cookielib
 
+# 获取已经保存在ibizsimCookies.txt的cookie值
 s = requests.session()
 s.cookies = cookielib.LWPCookieJar(filename="ibizsimCookies.txt")
 s.cookies.load(ignore_discard=True, ignore_expires=True)
 
+# 获取决策提交表单对应的authenticity_token值
+# 需要登陆后的cookies值
 def get_formput_token(game_id, team_id):
     referer = "http':/'/www.ibizsim.cn/games/welcome?gameid=" + game_id + \
         "&teamid=" + team_id
@@ -32,6 +35,7 @@ def get_formput_token(game_id, team_id):
     authenticity_token = re.findall(pat, response.text)[0]
     return authenticity_token
 
+# 提交决策
 
 def formput(authenticity_token, param, team_id, game_id, user_id, period_id):
     url = "http://www.ibizsim.cn/games/make_decision?teamid=" + team_id
@@ -142,7 +146,6 @@ def formput(authenticity_token, param, team_id, game_id, user_id, period_id):
     return response
 
 
-
 if __name__ == "__main__":
     # import login
     import form_read
@@ -154,7 +157,7 @@ if __name__ == "__main__":
     response = formput(authenticity_token, data, team_id,
                        game_id, user_id, period_id)
     #response.encoding = response.apparent_encoding
-    #print(response.text)
+    # print(response.text)
 
 """
     login.s.cookies.load(ignore_discard=True, ignore_expires=True)
