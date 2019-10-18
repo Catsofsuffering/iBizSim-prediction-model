@@ -36,7 +36,10 @@ def login(authenticity_token, username, password):
         'commit': '登录'
     }
     response = s.post(url, data=param)
-    print(response)
+    response.encoding=response.apparent_encoding
+    if response.status_code == 200:
+        print(response.text)
+    s.cookies.save()
 
 
 if __name__ == "__main__":

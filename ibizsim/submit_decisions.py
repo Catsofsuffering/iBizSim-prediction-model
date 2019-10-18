@@ -107,6 +107,7 @@ def formput(param):
         'commit': '提交'
     }
     response = r.post(url, data=param)
+    response.encoding=response.apparent_encoding 
     if response.status_code == 200:
         return response.text
     return response
@@ -133,6 +134,7 @@ if __name__ == "__main__":
     login(authenticity_token, username, password)
     data = excel_data(filename, 5)
     html = formput(data)
-    with open('result.txt', 'w') as f:
-        f.write(html)
-        f.close()
+    # with open('result.txt', 'w') as f:
+    #    f.write(html)
+    #    f.close()
+    print(html)
