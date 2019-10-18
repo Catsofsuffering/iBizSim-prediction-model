@@ -1,31 +1,33 @@
 # -*-coding=utf-8-*-
-import login
-.py
+import requests
 
-authenticity_token = get_token()
-cookies = login(authenticity_token, username, password)
-referer = Url + "/games/decision?gameid=" + gameid + "&type=raw&teamid=" + teamid + "&mode=old"
-
-headers = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-    'Accept-Encoding': 'gzip, deflate',
-    'Accept-Language': 'zh-CN,zh;q=0.9',
-    'Cache-Control': 'max-age=0',
-    'Connection': 'keep-alive',
-    'Content-Length': '2063',
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Cookie': cookies,
-    'Host': 'www.ibizsim.cn',
-    'Origin': 'http://www.ibizsim.cn',
-    'Referer': referer,
-    'Upgrade-Insecure-Requests': '1'
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
-}
-
-s.headers.update(headers)
 
 def formput(param):
-    url = "http://www.ibizsim.cn/games/make_decision?teamid=" + teamid
+    url = "http://www.ibizsim.cn/games/make_decision?teamid=" + team_id
+
+    # referer = "http://www.ibizsim.cn/games/decision?gameid=" + game_id + "&mode=old&periodid=" + period_id + \
+    #    "&teamid=" + team_id + "&type=raw"
+    referer = "http://www.ibizsim.cn/games/decision?gameid=" + game_id + "&mode=old" + \
+        "&teamid=" + team_id + "&type=raw"
+
+    headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'Cache-Control': 'max-age=0',
+        'Connection': 'keep-alive',
+        'Content-Length': '2063',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        # 'Cookie': cookies,
+        'Host': 'www.ibizsim.cn',
+        'Origin': 'http://www.ibizsim.cn',
+        'Referer': referer,
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
+    }
+
+    r = requests.session()
+    r.headers.update(headers)
 
     param = {
         'utf8': '✓',
@@ -81,7 +83,7 @@ def formput(param):
         'decision[output24]': data[48],
         'decision[r_and_d2]': data[49],
         'decision[output31]': data[50],
-        'decision[output32]': daya[51],
+        'decision[output32]': data[51],
         'decision[output33]': data[52],
         'decision[output34]': data[53],
         'decision[r_and_d3]': data[54],
@@ -102,6 +104,35 @@ def formput(param):
         'decision[game_id]': game_id,
         'decision[user_id]': user_id,
         'decision[period_id]': period_id,
-        'commit': 提交
+        'commit': '提交'
     }
-    response = s.post(url, data=param)
+    response = r.post(url, data=param)
+    if response.status_code == 200:
+        return response.text
+    return response
+    # response.encoding = 'utf-8'
+    # html = response.content
+    # html_doc=html.decode("utf-8","ignore")
+    # print(html_doc.encode("utf-8-sig"))
+    # print(response.text)
+    #pat = "提交决策成功"
+    # if len(re.findall(pat, response.content)) == 0:
+    #    print("Failed to submit decisions")
+    # else:
+    #    print("Succesfully submited decisions")
+    #    print(re.findall(pat, response.content)[0])
+
+
+if __name__ == "__main__":
+    from login import *
+    from form_read import *
+    username, password = '821621930@qq.com', 'Whoareyou59820'
+    game_id, user_id, period_id = '177430', '351328', '3376977'
+    team_id = user_id
+    authenticity_token = get_token()
+    login(authenticity_token, username, password)
+    data = excel_data(filename, 5)
+    html = formput(data)
+    with open('result.txt', 'w') as f:
+        f.write(html)
+        f.close()

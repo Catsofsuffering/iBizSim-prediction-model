@@ -10,7 +10,6 @@ headers = {
     'Connection': 'keep-alive',
     'Host': 'www.ibizsim.cn',
     'If-None-Match': '"8678321f2ab73884db2bd1f70c4e29c8"',
-    'Referer': 'http://www.ibizsim.cn/train/all',
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
 }
@@ -37,12 +36,10 @@ def login(authenticity_token, username, password):
         'commit': '登录'
     }
     response = s.post(url, data=param)
-    cookies = response.cookies.get_dict()
-    return cookies
+    print(response)
+
 
 if __name__ == "__main__":
     username, password = '821621930@qq.com', 'Whoareyou59820'
     authenticity_token = get_token()
-    cookies =  login(authenticity_token, username, password)
-    print(cookies)
-        
+    login(authenticity_token, username, password)
