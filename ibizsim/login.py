@@ -18,8 +18,19 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
 }
 
+check_header = {
+    'Host': 'www.ibizsim.cn',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+    'Accept-Encoding': 'gzip, deflate',
+    'Referer': 'http://www.ibizsim.cn/main/login',
+    'Connection': 'close',
+    'Upgrade-Insecure-Requests': '1'
+}
 
-def get_token():
+
+def get_login_token():
     get_url = 'http://www.ibizsim.cn/main/login'
     response = s.get(get_url)
     pat = 'name=\"authenticity_token\" type=\"hidden\" value=\"(.*?)\"'
@@ -40,12 +51,14 @@ def login(authenticity_token, username, password):
     # response.encoding = response.apparent_encoding
     # print(response.status_code)
     # print(response.text)
-    s.cookies.save()
+    s.cookies.save(filename="ibizsimCookies.txt",
+                   ignore_discard=True, ignore_expires=True)
+    print(s.cookies)
 
 
 def check_login_status():
     check_url = "http://www.ibizsim.cn/games/mygames"
-    resp = s.get(check_url, headers=header, allow_redirects=False)
+    resp = s.get(check_url, headers=check_header, allow_redirects=False)
     if resp.status_code != 200:
         return False
     else:
@@ -53,17 +66,15 @@ def check_login_status():
 
 
 if __name__ == "__main__":
-    s.cookies.load()
+    s.cookies.load(ignore_discard=True, ignore_expires=True)
     login_status = check_login_status()
     if login_status == False:
         username, password = '821621930@qq.com', 'Whoareyou59820'
-        authenticity_token = get_token()
+        authenticity_token = get_login_token()
         login(authenticity_token, username, password)
         print("Login by username and password")
     else:
         print("login by cookies")
     response = s.get("http://www.ibizsim.cn/games/man_machine",
                      headers=header, allow_redirects=False)
-    response.encoding = response.apparent_encoding                
     print(response.status_code)
-    print(response.text)
