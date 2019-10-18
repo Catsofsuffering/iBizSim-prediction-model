@@ -107,9 +107,7 @@ def formput(param):
         'commit': '提交'
     }
     response = r.post(url, data=param)
-    response.encoding=response.apparent_encoding 
-    if response.status_code == 200:
-        return response.text
+    response.encoding = response.apparent_encoding
     return response
     # response.encoding = 'utf-8'
     # html = response.content
@@ -125,16 +123,20 @@ def formput(param):
 
 
 if __name__ == "__main__":
-    from login import *
-    from form_read import *
-    username, password = '821621930@qq.com', 'Whoareyou59820'
+    import login
+    import form_read
+    login.s.cookies.load()
+    login_status = login.check_login_status()
+    if login_status == False:
+        username, password = '821621930@qq.com', 'Whoareyou59820'
+        authenticity_token = login.get_token()
+        login.login(authenticity_token, username, password)
+        print("Login by username and password")
+    else:
+        print("login by cookies")
     game_id, user_id, period_id = '177430', '351328', '3376977'
     team_id = user_id
-    authenticity_token = get_token()
-    login(authenticity_token, username, password)
-    data = excel_data(filename, 5)
-    html = formput(data)
-    # with open('result.txt', 'w') as f:
-    #    f.write(html)
-    #    f.close()
-    print(html)
+    data = form_read.excel_data(form_read.filename, 5)
+    response = formput(data)
+    response.encoding = response.apparent_encoding
+    print(response.text)
