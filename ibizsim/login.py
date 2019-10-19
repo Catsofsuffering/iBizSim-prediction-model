@@ -75,7 +75,8 @@ if __name__ == "__main__":
     s.cookies.load(ignore_discard=True, ignore_expires=True)
     login_status = check_login_status()
     if login_status == False:
-        username, password = '821621930@qq.com', 'Whoareyou59820'
+        # username, password = '821621930@qq.com', 'Whoareyou59820'
+        username, password = '809559902@qq.com', '200061431'
         authenticity_token = get_login_token()
         login(authenticity_token, username, password)
         print("Login by username and password")

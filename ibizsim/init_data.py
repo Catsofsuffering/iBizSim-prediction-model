@@ -25,5 +25,5 @@ def get_init_data(game_id, team_id):
     }
 
     rule_resp = s.get(rule_url, headers=headers)
+    soup = BeautifulSoup(rule_resp.text, "lxml")
     
-
