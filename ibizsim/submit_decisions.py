@@ -153,7 +153,7 @@ if __name__ == "__main__":
     team_id = user_id = '351328'
     period_id = '3376977'
     authenticity_token = get_formput_token(game_id, team_id)
-    data = form_read.excel_data(form_read.filename, 5)
+    data = form_read.write_data(form_read.filename, 5)
     response = formput(authenticity_token, data, team_id,
                        game_id, user_id, period_id)
     #response.encoding = response.apparent_encoding

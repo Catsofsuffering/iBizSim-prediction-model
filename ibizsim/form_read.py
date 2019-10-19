@@ -20,6 +20,8 @@ develop_list = []
 # 定义财务finance_list
 finance_list = []
 
+# 因为range函数，行列范围中的up项与实际相比加1
+
 # 价格行列范围
 price_low_row = 6
 price_up_row = 11
@@ -49,7 +51,7 @@ finance_low_col = 70
 finance_up_col = 75
 
 # 读取模板表格对应的数据
-def excel_data(filename, sheet_index):
+def write_data(filename, sheet_index):
     try:
         # 打开Excel文件读取数据
         data = xlrd.open_workbook(filename)
@@ -113,5 +115,5 @@ def excel_data(filename, sheet_index):
 
 
 if __name__ == "__main__":
-    data = excel_data(filename, 5)
+    data = write_data(filename, 5)
     # print(data)
