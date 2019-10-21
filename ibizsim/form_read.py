@@ -55,12 +55,8 @@ def write_data(filename, sheet_index):
     try:
         # 打开Excel文件读取数据
         data = xlrd.open_workbook(filename)
-        # 获取第一个工作表
+        # 获取对应工作表
         table = data.sheet_by_index(sheet_index)
-        # 获取行数
-        nrows = table.nrows
-        # 获取列数
-        ncols = table.ncols
 
         # 价格
         for row in range(price_low_row, price_up_row):
