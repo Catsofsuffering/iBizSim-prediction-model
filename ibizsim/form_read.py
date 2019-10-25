@@ -51,12 +51,15 @@ finance_low_col = 71
 finance_up_col = 76
 
 # 读取模板表格对应的数据
-def write_data(filename, sheet_index):
+
+
+def write_data(filename, current_period):
     try:
         # 打开Excel文件读取数据
         excel = load_workbook(filename)
         sheetnames = excel.sheetnames
         # 获取对应工作表
+        sheet_index = current_period-6
         table = excel[sheetnames[sheet_index]]
 
         # 价格
@@ -112,7 +115,7 @@ def write_data(filename, sheet_index):
 
 
 if __name__ == "__main__":
-    data = write_data(filename, 3)
-    print(data)
+    data = write_data(filename, 9)
+    # print(data)
     for i in data:
         print(i)

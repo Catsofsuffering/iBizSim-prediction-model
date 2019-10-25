@@ -9,7 +9,6 @@ s = requests.session()
 s.cookies = cookielib.LWPCookieJar(filename="ibizsimCookies.txt")
 s.cookies.load(ignore_discard=True, ignore_expires=True)
 
-# 获取规则界面的html
 data = []
 
 def get_init_data(team_name, game_id, team_id):

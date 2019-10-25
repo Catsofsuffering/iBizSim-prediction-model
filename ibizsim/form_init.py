@@ -92,7 +92,7 @@ criteria_up_col = 11
 
 # 写入比赛参数
 def write_data(filename, data):
-    #try:
+    try:
         excel = load_workbook(filename)
         sheetnames = excel.sheetnames
         table = excel[sheetnames[1]]
@@ -193,8 +193,8 @@ def write_data(filename, data):
         # 保存
         excel.save(filename)
         print('sucessfully saved')
-    #except Exception, e:
-        #print str(e)
+    except Exception, e:
+        print str(e)
 
 
 if __name__ == "__main__":
