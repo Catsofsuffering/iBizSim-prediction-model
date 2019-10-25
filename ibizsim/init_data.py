@@ -12,7 +12,6 @@ s.cookies.load(ignore_discard=True, ignore_expires=True)
 # 获取规则界面的html
 data = []
 
-
 def get_init_data(team_name, game_id, team_id):
     rule_url = "http://www.ibizsim.cn/games/rules?gameid="+game_id+"&teamid="+team_id
 
@@ -229,13 +228,16 @@ def get_init_data(team_name, game_id, team_id):
     for n in range(7):
         data.append(pat.findall(str(criteria))[n])
 
+
     # 将结果中的空格除去
     datas = []
     for i in data:
         try:
-            datas.append(i.replace(" ", ""))
+            i = i.replace(" ", "")
+            i = i.replace(",","")
+            datas.append(i)
         except:
-            pass
+            datas.append(i)
     return datas
 
 
@@ -245,10 +247,12 @@ if __name__ == "__main__":
     team_id = '350065'
     game_id = '177395'
     datas = get_init_data(team_name, game_id, team_id)
+    print(datas)
+'''
     import form_init
     import os
     path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     filename = path+os.sep+'form'+os.sep+'2019_bizsim.xls'
-    form_init.init_data(filename, datas)
-
+    form_init.write_data(filename, datas)
+'''
 
