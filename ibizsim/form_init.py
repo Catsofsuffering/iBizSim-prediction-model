@@ -41,13 +41,13 @@ production_resources_up_row = 29
 production_resources_low_col = 4
 production_resources_up_row = 8
 # 机器价格
-machine_price_row =  30
+machine_price_row = 30
 machine_price_col = 4
 # 折旧率
 depreciation_rate_row = 30
 depreciation_rate_col = 6
 # 原材料价格
-material_price_low_row = 33
+material_price_low_row = 34
 material_price_up_row = 38
 material_price_low_col = 4
 material_price_up_col = 6
@@ -92,22 +92,25 @@ criteria_low_col = 4
 criteria_up_col = 11
 
 
-
 # 写入比赛参数
-def init_data(filename,data):
+def init_data(filename, data):
     try:
         rexcel = open_workbook(filename)
         excel = copy(rexcel)
         table = excel.get_sheet(1)
-        
+        n = 0
+
         # 本公司序数
-        table.write = table.write(company_number_row, company_number_col, data[n])
+        table.write = table.write(
+            company_number_row, company_number_col, data[n])
         n += 1
         # 总共公司数
-        table.write = table.write(total_company_raw, total_company_col, data[n])
+        table.write = table.write(
+            total_company_raw, total_company_col, data[n])
         n += 1
         # 产品运出率
-        table.write = table.write(product_delivery_rate_row, product_delivery_rate_col, data[n])
+        table.write = table.write(
+            product_delivery_rate_row, product_delivery_rate_col, data[n])
         n += 1
         # 固定运费
         for row in range(fixed_freight_low_row, fixed_freight_up_row):
@@ -120,7 +123,8 @@ def init_data(filename,data):
                 table.write = table.write(row, col, data[n])
                 n += 1
         # 单位原材料库存费
-        table.write = table.write(per_material_inventory_cost_row, per_material_inventory_cost_col, data[n])
+        table.write = table.write(
+            per_material_inventory_cost_row, per_material_inventory_cost_col, data[n])
         n += 1
         # 成品库存费
         col = product_inventory_cost_col
@@ -133,10 +137,12 @@ def init_data(filename,data):
                 table.write = table.write(row, col, data[n])
                 n += 1
         # 机器价格
-        table.write = table.write(machine_price_row, machine_price_col, data[n])
+        table.write = table.write(
+            machine_price_row, machine_price_col, data[n])
         n += 1
         # 折旧率
-        table.write = table.write(depreciation_rate_row, depreciation_rate_col, data[n])
+        table.write = table.write(
+            depreciation_rate_row, depreciation_rate_col, data[n])
         n += 1
         # 原材料价格
         for row in range(material_price_low_row, material_price_up_row):
@@ -149,7 +155,8 @@ def init_data(filename,data):
             table.write = table.write(row, col, data[n])
             n += 1
         # 原材料使用率
-        table.write = table.write(material_usage_row, material_usage_cost_col, data[n])
+        table.write = table.write(
+            material_usage_row, material_usage_cost_col, data[n])
         n += 1
         # 管理费
         for row in range(management_fee_low_row, management_fee_up_row):
@@ -189,5 +196,15 @@ def init_data(filename,data):
             n += 1
         # 保存
         excel.save(filename)
+        print('sucessfully saved')
     except Exception, e:
         print str(e)
+
+
+if __name__ == "__main__":
+    import init_data
+    team_name = u'全国熬夜锦标赛冠军选手'
+    team_id = '350065'
+    game_id = '177395'
+    datas = init_data.get_init_data(team_name, game_id, team_id)
+    init_data(filename, datas)
