@@ -26,8 +26,8 @@ product1_up_col = 12
 # 上期期末产品状况2
 product2_low_row = 42
 product2_up_row = 46
-product2_low_col = 3
-product2_up_col = 8
+product2_low_col = 4
+product2_up_col = 9
 # 上期公共报表价格
 price_low_row = 50
 price_up_row = 70
@@ -42,11 +42,11 @@ market_up_col = 20
 indicators_low_row = 95
 indicators_up_row = 115
 indicators_low_col = 4
-indicators_up_col = 20
+indicators_up_col = 12
 
 
 # 更新往期数据
-def update_data(filename, data, current_period):
+def update_excel_data(filename, data, current_period):
     try:
         excel = load_workbook(filename)
         sheetnames = excel.sheetnames
@@ -58,7 +58,7 @@ def update_data(filename, data, current_period):
         table.cell(bond_row, bond_col).value = data[n]
         n += 1
 
-        # 上期期末本金
+        # 上期债偿本金
         table.cell(principal_row, principal_col).value = data[n]
         n += 1
 
@@ -73,7 +73,7 @@ def update_data(filename, data, current_period):
             for col in range(product1_low_col, product1_up_col):
                 table.cell(row, col).value = data[n]
                 n += 1
-        
+
         # 上期期末产品状况2
         for row in range(product2_low_row, product2_up_row):
             for col in range(product2_low_col, product2_up_col):
@@ -97,9 +97,22 @@ def update_data(filename, data, current_period):
             for col in range(indicators_low_col, indicators_up_col):
                 table.cell(row, col).value = data[n]
                 n += 1
-        
+        print(n)
         # 保存
         excel.save(filename)
         print('sucessfully saved')
     except Exception, e:
         print str(e)
+
+    
+
+if __name__ == "__main__":
+
+    import update_data
+    team_name = u'全国熬夜锦标赛冠军选手'
+    team_id = '350065'
+    game_id = '177395'
+    period_id = '3376324'
+    company_number = '19'
+    datas = update_data.get_update_data(team_name, game_id, team_id, period_id, company_number)
+    update_excel_data(filename, datas, 15)
