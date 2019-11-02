@@ -1,49 +1,12 @@
 # -*-coding=utf-8-*-
 from openpyxl import load_workbook
+from settings import *
 import os
 
 # 设定提交表格的位置和名字
 # 硬编码，需要修改
 path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 filename = path+os.sep+'form'+os.sep+'2019_bizsim.xlsx'
-
-# 上期发债卷数
-bond_row = 4 
-bond_col = 8
-# 上期期末本金
-principal_row = 5
-principal_col = 8
-# 上期期末企业状况
-conditions_low_row = 4
-conditions_up_row = 22
-conditions_low_col = 4
-conditions_up_col = 6
-# 上期期末产品状况1
-product1_low_row = 24
-product1_up_row = 40
-product1_low_col = 5
-product1_up_col = 12
-# 上期期末产品状况2
-product2_low_row = 42
-product2_up_row = 46
-product2_low_col = 4
-product2_up_col = 9
-# 上期公共报表价格
-price_low_row = 50
-price_up_row = 70
-price_low_col = 4
-price_up_col = 20
-# 上期市场份额
-market_low_row = 73
-market_up_row = 93
-market_low_col = 4
-market_up_col = 20
-# 上期主要指标
-indicators_low_row = 95
-indicators_up_row = 115
-indicators_low_col = 4
-indicators_up_col = 12
-
 
 # 更新往期数据
 def update_excel_data(filename, data, current_period):
@@ -97,7 +60,6 @@ def update_excel_data(filename, data, current_period):
             for col in range(indicators_low_col, indicators_up_col):
                 table.cell(row, col).value = data[n]
                 n += 1
-        print(n)
         # 保存
         excel.save(filename)
         print('sucessfully saved')
@@ -116,3 +78,4 @@ if __name__ == "__main__":
     company_number = '19'
     datas = update_data.get_update_data(team_name, game_id, team_id, period_id, company_number)
     update_excel_data(filename, datas, 15)
+    print('success')

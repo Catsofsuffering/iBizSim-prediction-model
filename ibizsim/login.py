@@ -2,6 +2,7 @@
 import requests
 import re
 import http.cookiejar as cookielib
+from settings import *
 
 # session链接，初始化cookies文件
 s = requests.session()
@@ -20,32 +21,21 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
 }
 
-# 检查登录状态的header
-# 可以继续细化，改用登陆用的header修改而成
-check_header = {
-    'Host': 'www.ibizsim.cn',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-    'Accept-Encoding': 'gzip, deflate',
-    'Referer': 'http://www.ibizsim.cn/main/login',
-    'Connection': 'close',
-    'Upgrade-Insecure-Requests': '1'
-}
-
 # 获取登录表单的authenticity_token
 # 无需cookies值
+
+
 def get_login_token():
-    get_url = 'http://www.ibizsim.cn/main/login'
-    response = s.get(get_url)
+    response = s.get(token_url)
     pat = 'name=\"authenticity_token\" type=\"hidden\" value=\"(.*?)\"'
     authenticity_token = re.findall(pat, response.text)[0]
     return authenticity_token
 
 # 通过用户名和密码登陆
 # 同时保存cookies值到指定文件
+
+
 def login(authenticity_token, username, password):
-    login_url = "http://www.ibizsim.cn//center/trylogin"
     param = {
         'utf8': '✓',
         'authenticity_token': authenticity_token,
@@ -62,9 +52,10 @@ def login(authenticity_token, username, password):
     # print(s.cookies)
 
 # 检查cookies值是否失效
+
+
 def check_login_status():
-    check_url = "http://www.ibizsim.cn/games/mygames"
-    resp = s.get(check_url, headers=check_header, allow_redirects=False)
+    resp = s.get(check_url, headers=header, allow_redirects=False)
     if resp.status_code != 200:
         return False
     else:
@@ -72,6 +63,7 @@ def check_login_status():
 
 
 if __name__ == "__main__":
+
     s.cookies.load(ignore_discard=True, ignore_expires=True)
     login_status = check_login_status()
     if login_status == False:
@@ -85,3 +77,4 @@ if __name__ == "__main__":
     response = s.get("http://www.ibizsim.cn/games/man_machine",
                      headers=header, allow_redirects=False)
     print(response.status_code)
+

@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import http.cookiejar as cookielib
 import re
+from settings import *
 
 # 获取已经保存在ibizsimCookies.txt的cookie值
 s = requests.session()
@@ -39,19 +40,9 @@ def get_update_data(team_name, game_id, team_id, period_id, company_number):
     price_url = "http://www.ibizsim.cn/games/public_report?gameid=" + \
         game_id+"&teamid="+team_id+"&periodid="+period_id
 
-    headers = {
-        'Host': 'www.ibizsim.cn',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-        'Accept-Encoding': 'gzip, deflate',
-        'Connection': 'close',
-        'Upgrade-Insecure-Requests': '1',
-        'If-None-Match': '"9674b5cba51bec402d5be893520406b9"',
-        'Cache-Control': 'max-age=0'
-    }
+
     # 查找上期发债卷数
-    account_resp = s.get(account_url, headers=headers)
+    account_resp = s.get(account_url, headers=header)
     soup = BeautifulSoup(account_resp.text, "lxml")
     bond = soup.find_all(name="td", class_="text-right")
     pat = re.compile("[\d\.\,]+")
@@ -67,7 +58,7 @@ def get_update_data(team_name, game_id, team_id, period_id, company_number):
     # 查找上期期末企业状况
     private_url = get_url(
         game_id, team_id, period_id, 0, False)
-    private_resp = s.get(private_url, headers=headers)
+    private_resp = s.get(private_url, headers=header)
     soup = BeautifulSoup(private_resp.text, "lxml")
     conditions = soup.find_all(name="td", class_="text-right")
     for m in range(36):
@@ -79,7 +70,7 @@ def get_update_data(team_name, game_id, team_id, period_id, company_number):
     # 查找上期期末产品状况
     private_url = get_url(
         game_id, team_id, period_id, 1, False)
-    private_resp = s.get(private_url, headers=headers)
+    private_resp = s.get(private_url, headers=header)
     soup = BeautifulSoup(private_resp.text, "lxml")
     product = soup.find_all(name="td", class_="text-right")
     for m in range(132):
@@ -89,7 +80,7 @@ def get_update_data(team_name, game_id, team_id, period_id, company_number):
         data.append(n_product)
 
     # 查找上期公共报表价格
-    public_resp = s.get(price_url, headers=headers)
+    public_resp = s.get(price_url, headers=header)
     soup = BeautifulSoup(public_resp.text, "lxml")
     price = soup.find_all(name="td", class_="text-right")
     for m in range(16*int(company_number)):
@@ -105,7 +96,7 @@ def get_update_data(team_name, game_id, team_id, period_id, company_number):
     # 查找上期市场份额
     public_url = get_url(
         game_id, team_id, period_id, 2, True)
-    public_resp = s.get(public_url, headers=headers)
+    public_resp = s.get(public_url, headers=header)
     soup = BeautifulSoup(public_resp.text, "lxml")
     market = soup.find_all(name="td", class_="text-right")
     for m in range(16*int(company_number)):
@@ -120,7 +111,7 @@ def get_update_data(team_name, game_id, team_id, period_id, company_number):
     # 查找上期主要指标
     public_url = get_url(
         game_id, team_id, period_id, 3, True)
-    public_resp = s.get(public_url, headers=headers)
+    public_resp = s.get(public_url, headers=header)
     soup = BeautifulSoup(public_resp.text, "lxml")
     indicators = soup.find_all(name="td", class_="text-right")
     # print(indicators)

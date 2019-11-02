@@ -2,6 +2,7 @@
 import requests
 import re
 import http.cookiejar as cookielib
+from settings import *
 
 # 获取已经保存在ibizsimCookies.txt的cookie值
 s = requests.session()
@@ -17,19 +18,7 @@ def get_formput_token(game_id, team_id):
     get_url = "http://www.ibizsim.cn/games/decision?gameid=" + \
         game_id + "&type=raw&teamid=" + team_id + "&mode = old"
 
-    headers = {
-        'Host': 'www.ibizsim.cn',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-        'Accept-Encoding': 'gzip, deflate',
-        'Connection': 'close',
-        'Referer': referer,
-        'Upgrade-Insecure-Requests': '1',
-        'If-None-Match': '"92cb8a089131707b97b015c23e7073a7"'
-    }
-
-    response = s.get(get_url, headers=headers)
+    response = s.get(get_url, headers=referer_header)
     # print(response.status_code)
     pat = 'name=\"authenticity_token\" type=\"hidden\" value=\"(.*?)\"'
     authenticity_token = re.findall(pat, response.text)[0]
@@ -42,21 +31,6 @@ def formput(authenticity_token, param, team_id, game_id, user_id, period_id):
 
     referer = "http://www.ibizsim.cn/games/decision?gameid=" + game_id + \
         "&mode=old&teamid=" + team_id + "&type=raw"
-
-    headers = {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-        'Accept-Encoding': 'gzip, deflate',
-        'Accept-Language': 'zh-CN,zh;q=0.9',
-        'Cache-Control': 'max-age=0',
-        'Connection': 'keep-alive',
-        'Content-Length': '2063',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Host': 'www.ibizsim.cn',
-        'Origin': 'http://www.ibizsim.cn',
-        'Referer': referer,
-        'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
-    }
 
     param = {
         'utf8': '✓',
@@ -135,7 +109,7 @@ def formput(authenticity_token, param, team_id, game_id, user_id, period_id):
         'decision[period_id]': period_id,
         'commit': '提交'
     }
-    response = s.post(url, data=param, headers=headers)
+    response = s.post(url, data=param, headers=referer_header)
     response.encoding = response.apparent_encoding
     pat = "提交决策成功"
     if len(re.findall(pat, response.content)) == 0:
